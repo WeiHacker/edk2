@@ -10,6 +10,7 @@ $QEMU     = "D:\qemu\qemu-system-x86_64.exe"
 $OVMF     = "D:\shen_work\Uefi_Project\edk2\Build\OvmfX64\DEBUG_VS2022\FV\OVMF.fd"
 $EDK2     = "D:\shen_work\Uefi_Project\edk2"
 $HELLO    = "$EDK2\Build\EmulatorX64\DEBUG_VS2022\X64\HelloWorld.efi"
+$SHELL    = "$EDK2\Build\Shell\DEBUG_VS2022\X64\ShellPkg\Application\Shell\Shell\DEBUG\Shell.efi"
 $ESP      = "$EDK2\esp_image"
 
 # ---- Step 1: Build ESP directory ----
@@ -25,6 +26,9 @@ Write-Host "      -> EFI\BOOT\BOOTX64.EFI (auto-boot)" -ForegroundColor Green
 
 Copy-Item $HELLO "$ESP\HelloWorld.efi"
 Write-Host "      -> HelloWorld.efi (manual run)" -ForegroundColor Green
+
+Copy-Item $SHELL "$ESP\Shell.efi"
+Write-Host "      -> Shell.efi (UEFI Shell)" -ForegroundColor Green
 
 # ---- Step 2: Verify ----
 Write-Host "[2/4] Checking prerequisites..." -ForegroundColor Cyan
@@ -47,6 +51,7 @@ Write-Host "  OVMF will auto-boot EFI\BOOT\BOOTX64.EFI (UEFI Spec section 3.4.1.
 Write-Host "  Manual run from UEFI Shell:"
 Write-Host "    Shell> fs0:"
 Write-Host "    fs0:> HelloWorld.efi"
+Write-Host "    fs0:> Shell.efi"
 Write-Host ""
 
 & $QEMU `
