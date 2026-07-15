@@ -1,0 +1,51 @@
+##  @file
+# Provides shell my Rtc functions
+#
+#
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010006
+  BASE_NAME                      = UefiShellMyRtcCommandsLib
+  FILE_GUID                      = 9A947F7E-3861-45ce-87AB-7221219AE255
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = NULL|UEFI_APPLICATION UEFI_DRIVER
+  CONSTRUCTOR                    = ShellMyRtcCommandsLibConstructor
+  DESTRUCTOR                     = ShellMyRtcCommandsLibDestructor
+
+[Sources.common]
+  MyRtcCmd.c
+  UefiShellMyRtcCommandsLib.uni
+  UefiShellMyRtcCommandsLib.c
+  UefiShellMyRtcCommandsLib.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ShellPkg/ShellPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  MemoryAllocationLib
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  ShellCommandLib
+  ShellLib
+  UefiLib
+  UefiRuntimeServicesTableLib
+  UefiBootServicesTableLib
+  PcdLib
+  HiiLib
+  FileHandleLib
+
+[Pcd]
+  gEfiShellPkgTokenSpaceGuid.PcdShellProfileMask ## CONSUMES
+
+[Protocols]
+  
+
+[Guids]
+  gShellMyRtcHiiGuid                         ## SOMETIMES_CONSUMES ## HII
+

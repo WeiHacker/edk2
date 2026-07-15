@@ -1,0 +1,39 @@
+## @file
+#  Study Package - A study package for UEFI Driver development.
+#
+#  This package is created for learning and demonstrating UEFI Driver
+#  development following the UEFI Driver Model.
+#
+#  Copyright (c) 2026, Study. All rights reserved.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010035
+  PACKAGE_NAME                   = StudyPkg
+  PACKAGE_GUID                   = B348D7C3-4A9F-4B8C-8A1E-2F3D4E5A6B7C
+  PACKAGE_VERSION                = 0.1
+
+[Includes]
+  Include
+
+[LibraryClasses]
+  ##  @libraryclass  Provides the interface for Study Driver utilities.
+  StudyDriverLib|Include/Library/StudyDriverLib.h
+
+[Guids]
+  ## Study Package token space GUID.
+  gStudyPkgTokenSpaceGuid   = { 0xB348D7C3, 0x4A9F, 0x4B8C, { 0x8A, 0x1E, 0x2F, 0x3D, 0x4E, 0x5A, 0x6B, 0x7C } }
+
+  ## GUID installed by MyDriver on the controller handle after successful Start().
+  gStudyMyDriverBindingGuid = { 0xC45A8E9D, 0x5B0A, 0x4F8C, { 0x9A, 0x2E, 0x3F, 0x4D, 0x5E, 0x6A, 0x7B, 0x8D } }
+
+[Protocols]
+  ## Protocol produced by MyDriver to identify that the driver is bound.
+  gStudyMyDriverProtocolGuid = { 0xD56B9F0E, 0x6A1B, 0x4F8D, { 0x0A, 0x3E, 0x4F, 0x5D, 0x6E, 0x7A, 0x8B, 0x9E } }
+
+[PcdsFixedAtBuild]
+  ##  A string PCD to display a message from MyDriver.
+  #   The default is "Hello from StudyPkg MyDriver!".
+  gStudyPkgTokenSpaceGuid.PcdMyDriverMessage|"Hello from StudyPkg MyDriver!"|VOID*|0x00000001

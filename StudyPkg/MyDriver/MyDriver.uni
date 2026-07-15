@@ -1,0 +1,15 @@
+// /** @file
+// MyDriver - A UEFI Driver Model example.
+//
+// This module demonstrates the standard UEFI Driver Model by implementing
+// EFI_DRIVER_BINDING_PROTOCOL with Supported(), Start(), and Stop().
+//
+// Copyright (c) 2026, Study. All rights reserved.<BR>
+//
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+//
+// **/
+
+#string STR_MODULE_ABSTRACT             #language en-US "UEFI Driver Model example for study purposes"
+
+#string STR_MODULE_DESCRIPTION          #language en-US "This driver demonstrates the standard UEFI Driver Model. It implements EFI_DRIVER_BINDING_PROTOCOL (Supported, Start, Stop) and binds to any handle that supports the DevicePath protocol. The driver installs a marker protocol on the controller to indicate ownership and properly cleans up on Stop."

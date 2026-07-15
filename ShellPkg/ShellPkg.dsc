@@ -45,6 +45,7 @@
   UefiHiiServicesLib|MdeModulePkg/Library/UefiHiiServicesLib/UefiHiiServicesLib.inf
   HiiLib|MdeModulePkg/Library/UefiHiiLib/UefiHiiLib.inf
   VariablePolicyHelperLib|MdeModulePkg/Library/VariablePolicyHelperLib/VariablePolicyHelperLib.inf
+
   !include NetworkPkg/NetworkLibs.dsc.inc
 
   ShellLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
@@ -107,6 +108,7 @@
       NULL|ShellPkg/Library/UefiShellDebug1CommandsLib/UefiShellDebug1CommandsLib.inf
       NULL|ShellPkg/Library/UefiShellNetwork1CommandsLib/UefiShellNetwork1CommandsLib.inf
       NULL|ShellPkg/Library/UefiShellNetwork2CommandsLib/UefiShellNetwork2CommandsLib.inf
+      NULL|ShellPkg/Library/UefiShellMyRtcCommandsLib/UefiShellMyRtcCommandsLib.inf
 !endif #$(NO_SHELL_PROFILES)
   }
 

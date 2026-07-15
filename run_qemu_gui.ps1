@@ -1,6 +1,5 @@
 # ============================================================
-#  QEMU + OVMF boot HelloWorld.efi
-#  ESP with UEFI removable media layout -> auto-boot BOOTX64.EFI
+#  QEMU GUI mode - debug output in this terminal, UEFI console in GUI window
 # ============================================================
 
 $ErrorActionPreference = "Stop"
@@ -15,11 +14,8 @@ $ShellRtcCmd = "$EDK2\Build\StudyPkg\DEBUG_VS2022\X64\ShellRtcCmd.efi"
 $PciConfigApp = "$EDK2\Build\StudyPkg\DEBUG_VS2022\X64\PciConfigApp.efi"
 $MyWizDriver = "$EDK2\Build\MyWizardDriver\DEBUG_VS2022\X64\MyWizardDriver.efi"
 $Shell = "$EDK2\Build\Shell\DEBUG_VS2022\X64\ShellPkg\Application\Shell\Shell\DEBUG\Shell.efi"
-$LspciApp = "$EDK2\Build\StudyPkg\DEBUG_VS2022\X64\LspciApp.efi"
-$RU = "$EDK2\Build\Shell\DEBUG_VS2022\X64\RU.efi"
-$AcpiDumpApp = "$EDK2\Build\StudyPkg\DEBUG_VS2022\X64\AcpiDumpApp.efi"
-$SmbiosDumpApp = "$EDK2\Build\StudyPkg\DEBUG_VS2022\X64\SmbiosDumpApp.efi"
 $ESP      = "$EDK2\esp_image"
+$DBGLOG   = "$EDK2\debug.log"
 
 # ---- Step 1: Build ESP directory ----
 Write-Host "[1/4] Building ESP directory..." -ForegroundColor Cyan
@@ -44,20 +40,8 @@ Write-Host "      -> MyWizardDriver.efi (wizard driver)" -ForegroundColor Green
 Copy-Item $ShellRtcCmd "$ESP\ShellRtcCmd.efi"
 Write-Host "      -> ShellRtcCmd.efi (custom command)" -ForegroundColor Green
 
-Copy-Item $AcpiDumpApp "$ESP\AcpiDumpApp.efi"
-Write-Host "      -> AcpiDumpApp.efi (custom app)" -ForegroundColor Green
-
 Copy-Item $PciConfigApp "$ESP\PciConfigApp.efi"
 Write-Host "      -> PciConfigApp.efi (custom app)" -ForegroundColor Green
-
-Copy-Item $LspciApp "$ESP\LspciApp.efi"
-Write-Host "      -> LspciApp.efi (custom app)" -ForegroundColor Green
-
-Copy-Item $SmbiosDumpApp "$ESP\SmbiosDumpApp.efi"
-Write-Host "      -> SmbiosDumpApp.efi (custom app)" -ForegroundColor Green
-
-Copy-Item $RU "$ESP\RU.efi"
-Write-Host "      -> RU.efi (custom app)" -ForegroundColor Green
 
 Copy-Item $Shell "$ESP\Shell.efi"
 Write-Host "      -> Shell.efi (UEFI Shell)" -ForegroundColor Green
@@ -74,25 +58,35 @@ if (-not (Test-Path $OVMF)) {
     Write-Host "Build first: build -p OvmfPkg\OvmfPkgX64.dsc -t VS2022 -b DEBUG -a X64"
     exit 1
 }
+
+# Remove old debug log
+if (Test-Path $DBGLOG) {
+    Remove-Item -Force $DBGLOG
+}
+
 Write-Host "      OK" -ForegroundColor Green
 
-# ---- Step 3: Launch QEMU ----
-Write-Host "[3/4] Launching QEMU..." -ForegroundColor Cyan
+# ---- Step 3: Launch QEMU (GUI mode) ----
+Write-Host "[3/4] Launching QEMU (GUI mode)..." -ForegroundColor Cyan
 Write-Host ""
-Write-Host "  OVMF will auto-boot EFI\BOOT\BOOTX64.EFI (UEFI Spec section 3.4.1.1)"
-Write-Host "  Manual run from UEFI Shell:"
+Write-Host "  +----------|----------+"
+Write-Host "  | QEMU GUI | Terminal |"
+Write-Host "  +----------|----------+"
+Write-Host "  | UEFI     | DEBUG    |"
+Write-Host "  | Console  | output   |"
+Write-Host "  |          | (0x402)  |"
+Write-Host "  +----------|----------+"
+Write-Host "  | Interact | Watch    |"
+Write-Host "  | with     | driver   |"
+Write-Host "  | Shell    | messages |"
+Write-Host "  +----------+----------+"
+Write-Host ""
+Write-Host "  Manual run in UEFI Shell:"
 Write-Host "    Shell> fs0:"
-Write-Host "    fs0:> HelloWorld.efi"
-Write-Host "    fs0:> MyDriver.efi"
-Write-Host "    fs0:> ShellRtcCmd.efi"
-Write-Host "    fs0:> PciConfigApp.efi"
-Write-Host "    fs0:> RU.efi"
-Write-Host "    fs0:> SmbiosDumpApp.efi"
-Write-Host "    fs0:> AcpiDumpApp.efi"
-Write-Host "    fs0:> LspciApp.efi"
-Write-Host "    fs0:> Shell.efi"
 Write-Host "    fs0:> load MyWizardDriver.efi"
-Write-Host "    fs0:> connect"
+Write-Host "    fs0:> reconnect -r"
+Write-Host ""
+Write-Host "============================================================"
 Write-Host ""
 
 & $QEMU `

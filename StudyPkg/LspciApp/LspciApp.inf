@@ -1,0 +1,42 @@
+## @file
+#  LspciApp - A UEFI Shell PCI/PCIe enumeration utility.
+#
+#  Provides lspci-like functionality in the UEFI Shell:
+#    - Basic device scan (Bus:Dev:Fun, VID, DID, Class Code)
+#    - Verbose output (-v, -vv) with B ARs, subsystem, capabilities
+#    - Config space hex dump (-x)
+#    - PCI tree topology (-tv)
+#
+#  Copyright (c) 2026, Study. All rights reserved.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.25
+  BASE_NAME                      = LspciApp
+  FILE_GUID                      = 1A2B3C4D-5E6F-7A8B-9C0D-1E2F3A4B5C6D
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = ShellCEntryLib
+
+[Sources]
+  LspciApp.h
+  LspciApp.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ShellPkg/ShellPkg.dec
+  StudyPkg/StudyPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  IoLib
+  MemoryAllocationLib
+  PrintLib
+  ShellCEntryLib
+  ShellLib
+  UefiBootServicesTableLib
+  UefiLib
