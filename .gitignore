@@ -6,3 +6,12 @@ __pycache__/
 tags/
 .vscode/
 .venv/
+debug_uefi_linux.log
+ovmf_vars_linux.fd
+isos/alpine-standard-3.24.1-x86_64.iso
+isos/alpine-standard-3.24.1-x86_64.iso.sha256
+StudyPkg/LspciApp.zip
+ubuntu/SHA256SUMS
+ubuntu/SHA256SUMS.gpg
+ubuntu/ubuntu-20.04.6-live-server-amd64.iso
+ubuntu/ubuntu-20.04.qcow2

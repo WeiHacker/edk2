@@ -1,0 +1,51 @@
+## @file
+#  BgrtLogoDumpApp - ACPI XSDT and BGRT logo dump utility.
+#
+#  Locates the ACPI RSDP from the EFI Configuration Table, walks the
+#  XSDT, prints ACPI table headers, finds the BGRT, and exports the
+#  BGRT BMP logo to the current boot device via EFI file protocols.
+#
+#  Copyright (c) 2026, Study. All rights reserved.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.25
+  BASE_NAME                      = BgrtLogoDumpApp
+  FILE_GUID                      = AF0D3274-059B-4F98-A9DD-64038AB8CD0A
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = ShellCEntryLib
+
+[Sources]
+  BgrtLogoDumpApp.h
+  BgrtLogoDumpApp.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ShellPkg/ShellPkg.dec
+  StudyPkg/StudyPkg.dec
+
+[Guids]
+  gEfiAcpi10TableGuid                         ## CONSUMES
+  gEfiAcpi20TableGuid                         ## CONSUMES
+
+[Protocols]
+  gEfiLoadedImageProtocolGuid                 ## CONSUMES
+  gEfiSimpleFileSystemProtocolGuid            ## CONSUMES
+
+[BuildOptions]
+  MSFT:*_*_*_CC_FLAGS = /utf-8
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  MemoryAllocationLib
+  PrintLib
+  ShellCEntryLib
+  ShellLib
+  UefiApplicationEntryPoint
+  UefiBootServicesTableLib
+  UefiLib

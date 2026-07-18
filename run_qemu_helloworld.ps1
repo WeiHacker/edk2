@@ -15,6 +15,7 @@ $ShellRtcCmd = "$EDK2\Build\StudyPkg\DEBUG_VS2022\X64\ShellRtcCmd.efi"
 $PciConfigApp = "$EDK2\Build\StudyPkg\DEBUG_VS2022\X64\PciConfigApp.efi"
 $MyWizDriver = "$EDK2\Build\MyWizardDriver\DEBUG_VS2022\X64\MyWizardDriver.efi"
 $Shell = "$EDK2\Build\Shell\DEBUG_VS2022\X64\ShellPkg\Application\Shell\Shell\DEBUG\Shell.efi"
+$BgrtLogoDumpApp = "$EDK2\Build\StudyPkg\DEBUG_VS2022\X64\BgrtLogoDumpApp.efi"
 $LspciApp = "$EDK2\Build\StudyPkg\DEBUG_VS2022\X64\LspciApp.efi"
 $RU = "$EDK2\Build\Shell\DEBUG_VS2022\X64\RU.efi"
 $AcpiDumpApp = "$EDK2\Build\StudyPkg\DEBUG_VS2022\X64\AcpiDumpApp.efi"
@@ -40,6 +41,9 @@ Write-Host "      -> MyDriver.efi (custom driver)" -ForegroundColor Green
 
 Copy-Item $MyWizDriver "$ESP\MyWizardDriver.efi"
 Write-Host "      -> MyWizardDriver.efi (wizard driver)" -ForegroundColor Green
+
+Copy-Item $BgrtLogoDumpApp "$ESP\BgrtLogoDumpApp.efi"
+Write-Host "      -> BgrtLogoDumpApp.efi (custom app)" -ForegroundColor Green
 
 Copy-Item $ShellRtcCmd "$ESP\ShellRtcCmd.efi"
 Write-Host "      -> ShellRtcCmd.efi (custom command)" -ForegroundColor Green
@@ -88,6 +92,7 @@ Write-Host "    fs0:> ShellRtcCmd.efi"
 Write-Host "    fs0:> PciConfigApp.efi"
 Write-Host "    fs0:> RU.efi"
 Write-Host "    fs0:> SmbiosDumpApp.efi"
+Write-Host "    fs0:> BgrtLogoDumpApp.efi"
 Write-Host "    fs0:> AcpiDumpApp.efi"
 Write-Host "    fs0:> LspciApp.efi"
 Write-Host "    fs0:> Shell.efi"

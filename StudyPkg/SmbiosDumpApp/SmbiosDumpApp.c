@@ -493,6 +493,9 @@ ShellAppMain (
   Eps32 = NULL;
   Eps64 = NULL;
 
+  /**
+   * 获取系统配置表中的SMBIOS表
+   */
   Status = EfiGetSystemConfigurationTable (
              &gEfiSmbios3TableGuid,
              (VOID **)&Eps64
@@ -519,11 +522,17 @@ ShellAppMain (
     return SHELL_ABORTED;
   }
 
+  /**
+   * 打印信息
+   */
   DumpEps (Eps32, Eps64);
 
   //
   // 2. Walk the raw SMBIOS table.
   //
+  /**
+   * 获取SMBIOS表的起始地址和长度
+   */
   if (Eps64 != NULL) {
     TableStart  = (UINT8 *)(UINTN)Eps64->TableAddress;
     TableLength = (UINTN)Eps64->TableMaximumSize;
@@ -547,6 +556,9 @@ ShellAppMain (
   // 3. Install custom SMBIOS type via the protocol.
   //
   ShellPrintEx (-1, -1, L"\n=== Installing Custom SMBIOS Type 128 ===\n");
+  /**
+   * 安装自定义SMBIOS类型
+   */
   InstallCustomSmbiosType ();
 
   //
@@ -565,6 +577,9 @@ ShellAppMain (
     FilterType  = CUSTOM_SMBIOS_TYPE_NUM;
     SmbiosHandle = SMBIOS_HANDLE_PI_RESERVED;
 
+    /**
+     * 获取自定义SMBIOS类型的记录
+     */
     Status = SmbiosProtocol->GetNext (
                                SmbiosProtocol,
                                &SmbiosHandle,
@@ -574,6 +589,9 @@ ShellAppMain (
                                );
 
     if (!EFI_ERROR (Status)) {
+      /**
+       * 打印自定义SMBIOS类型记录
+       */
       DumpCustomType ((CUSTOM_SMBIOS_TYPE *)Record);
       ShellPrintEx (-1, -1, L"       (verified via EFI_SMBIOS_PROTOCOL, Handle=0x%04x)\n",
         (UINTN)SmbiosHandle);

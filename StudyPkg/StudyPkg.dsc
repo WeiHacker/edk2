@@ -69,5 +69,10 @@
   ##
   StudyPkg/SmbiosDumpApp/SmbiosDumpApp.inf
 
+  ##
+  # BgrtLogoDumpApp - ACPI XSDT walker and BGRT logo exporter.
+  ##
+  StudyPkg/BgrtLogoDumpApp/BgrtLogoDumpApp.inf
+
 [BuildOptions]
   *_*_*_CC_FLAGS = -D DISABLE_NEW_DEPRECATED_INTERFACES
