@@ -1,0 +1,46 @@
+## @file
+#  Shutdown warm reset ACPI table driver.
+#
+#  Publishes an SSDT that makes OS S5 shutdown perform warm reset.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION    = 1.30
+  BASE_NAME      = ShutdownWarmResetAcpiTableDxe
+  FILE_GUID      = c3c3274a-5931-46be-a903-7378ab91b3ff
+  MODULE_TYPE    = DXE_DRIVER
+  VERSION_STRING = 1.0
+  ENTRY_POINT    = ShutdownWarmResetAcpiTableDxeEntryPoint
+
+[Sources]
+  ShutdownWarmResetAcpiTableDxe.c
+  ShutdownWarmResetAcpiTableDxe.h
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  OvmfPkg/OvmfPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiAcpiTableProtocolGuid          ## CONSUMES
+  gQemuAcpiTableNotifyProtocolGuid   ## CONSUMES
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId            ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorId        ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorRevision  ## CONSUMES
+
+[Depex]
+  gEfiAcpiTableProtocolGuid AND gQemuAcpiTableNotifyProtocolGuid

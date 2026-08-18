@@ -46,6 +46,10 @@
     Start OVMF with a longer boot menu timeout so you can enter firmware UI.
     This OVMF build uses F2 or Esc, not Delete.
 
+.PARAMETER FatDir
+    Host directory exposed to the guest as a writable FAT disk.
+    The default is .\ubuntu\tool.
+
 .PARAMETER ResetNvram
     Reset the writable OVMF variable store from OVMF_VARS.fd.
 
@@ -83,6 +87,7 @@ param(
     [string]$CreateDiskSize = "",
     [int]$MemoryMB = 4096,
     [int]$CpuCount = 2,
+    [string]$FatDir = "D:\shen_work\Uefi_Project\edk2\ubuntu\tool",
     [switch]$InstallUbuntu,
     [switch]$BootUbuntuDisk,
     [switch]$EnterSetup,
@@ -121,6 +126,14 @@ Show this help:
 Enter OVMF firmware UI / boot manager:
   powershell -ExecutionPolicy Bypass -File .\run_qemu_uefi_linux.ps1 -EnterSetup -ResetNvram
 
+Enter OVMF Shell with a host FAT directory:
+  powershell -ExecutionPolicy Bypass -File .\run_qemu_uefi_linux.ps1 -EnterSetup -FatDir .\uefi_share
+
+Configure automatic mounting once inside Ubuntu:
+  sudo mkdir -p /mnt/host-tool
+  echo '/dev/disk/by-id/virtio-HOSTTOOLS-part1 /mnt/host-tool vfat defaults,nofail,x-systemd.device-timeout=5,uid=1000,gid=1000,umask=022 0 0' | sudo tee -a /etc/fstab
+  sudo mount -a
+
 First install: boot Ubuntu installer and attach a persistent qcow2 disk:
   powershell -ExecutionPolicy Bypass -File .\run_qemu_uefi_linux.ps1 -InstallUbuntu
 
@@ -150,6 +163,8 @@ Notes:
   - This OVMF build does not register Delete as the setup hotkey by default.
   - The default ISO is .\ubuntu\ubuntu-20.04.6-live-server-amd64.iso.
   - The persistent disk is .\ubuntu\ubuntu-20.04.qcow2.
+  - The default host tool directory is .\ubuntu\tool.
+  - The tool directory is available as /dev/disk/by-id/virtio-HOSTTOOLS-part1 in Ubuntu.
   - Do not use -ResetNvram every time. It is only for intentionally clearing UEFI NVRAM.
 '@
 }
@@ -332,6 +347,20 @@ if (-not [string]::IsNullOrWhiteSpace($LinuxDisk)) {
 if (-not [string]::IsNullOrWhiteSpace($LinuxIso)) {
     Add-IfPresent $Args @("-drive", "file=$LinuxIso,if=ide,media=cdrom,readonly=on")
     Write-Host "      Linux ISO  : $LinuxIso" -ForegroundColor Green
+}
+
+if (-not [string]::IsNullOrWhiteSpace($FatDir)) {
+    if (-not (Test-Path $FatDir)) {
+        New-Item -ItemType Directory -Path $FatDir | Out-Null
+    }
+
+    $FatDir = (Resolve-Path -LiteralPath $FatDir).Path
+    Add-IfPresent $Args @(
+        "-drive", "file=fat:rw:$FatDir,format=raw,if=none,id=hosttools",
+        "-device", "virtio-blk-pci,drive=hosttools,serial=HOSTTOOLS"
+    )
+    Write-Host "      FAT dir    : $FatDir" -ForegroundColor Green
+    Write-Host "      Ubuntu path: /mnt/host-tool (after the one-time /etc/fstab setup)" -ForegroundColor Green
 }
 
 if (-not $NoNetwork) {

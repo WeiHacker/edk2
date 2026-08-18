@@ -74,5 +74,10 @@
   ##
   StudyPkg/BgrtLogoDumpApp/BgrtLogoDumpApp.inf
 
+  ##
+  # Homework4SwSmiTriggerApp - Software SMI trigger application.
+  ##
+  StudyPkg/Homework4SwSmiTriggerApp/Homework4SwSmiTriggerApp.inf
+
 [BuildOptions]
   *_*_*_CC_FLAGS = -D DISABLE_NEW_DEPRECATED_INTERFACES

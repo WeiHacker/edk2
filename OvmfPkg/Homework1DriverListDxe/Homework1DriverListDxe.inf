@@ -1,0 +1,42 @@
+## @file
+#  Homework 1.1 UEFI driver list dump DXE driver.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = Homework1DriverListDxe
+  FILE_GUID                      = 8e0f98fd-1d8e-4e5c-9e1c-3d8a8fc032c1
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = Homework1DriverListDxeEntryPoint
+
+[Sources]
+  Homework1DriverListDxe.c
+  Homework1DriverListDxe.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  DevicePathLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiComponentNameProtocolGuid     ## SOMETIMES_CONSUMES
+  gEfiComponentName2ProtocolGuid    ## SOMETIMES_CONSUMES
+  gEfiDriverBindingProtocolGuid     ## CONSUMES
+  gEfiLoadedImageProtocolGuid       ## SOMETIMES_CONSUMES
+
+[Guids]
+  gEfiEventReadyToBootGuid          ## CONSUMES ## Event
+
+[Depex]
+  TRUE

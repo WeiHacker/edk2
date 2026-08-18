@@ -90,6 +90,7 @@
 !include OvmfPkg/Include/Dsc/OvmfPkg.dsc.inc
 
 [BuildOptions]
+  MSFT:*_*_*_CC_FLAGS = /utf-8
   GCC:RELEASE_*_*_CC_FLAGS             = -DMDEPKG_NDEBUG
   INTEL:RELEASE_*_*_CC_FLAGS           = /D MDEPKG_NDEBUG
   MSFT:RELEASE_*_*_CC_FLAGS            = /D MDEPKG_NDEBUG
@@ -809,6 +810,9 @@
       PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   }
   MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
+  OvmfPkg/Homework13PeimSecond/Homework13PeimSecond.inf
+  OvmfPkg/Homework13PeimFirst/Homework13PeimFirst.inf
+  OvmfPkg/Homework14RtcPei/Homework14RtcPei.inf
 
   OvmfPkg/PlatformPei/PlatformPei.inf {
     <LibraryClasses>
@@ -994,6 +998,11 @@
   OvmfPkg/QemuRamfbDxe/QemuRamfbDxe.inf
   OvmfPkg/VirtioGpuDxe/VirtioGpu.inf
   OvmfPkg/VirtHstiDxe/VirtHstiDxe.inf
+  OvmfPkg/Homework1DriverListDxe/Homework1DriverListDxe.inf
+  OvmfPkg/Homework12BootDevicePathDxe/Homework12BootDevicePathDxe.inf
+  OvmfPkg/Homework14RtcDxe/Homework14RtcDxe.inf
+  OvmfPkg/HomeworkI2cMasterDxe/HomeworkI2cMasterDxe.inf
+  OvmfPkg/HomeworkSpdInfoShell/HomeworkSpdInfoShell.inf
 
   #
   # ISA Support
@@ -1010,16 +1019,20 @@
       NULL|OvmfPkg/Library/SmbiosVersionLib/DetectSmbiosVersionLib.inf
   }
   OvmfPkg/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+  OvmfPkg/HomeworkSmbios/HomeworkSmbiosDxe.inf
+  OvmfPkg/HomeworkSmbios/HomeworkSmbiosShell.inf
 
   #
   # ACPI Support
   #
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
   OvmfPkg/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  OvmfPkg/ShutdownWarmResetAcpiTableDxe/ShutdownWarmResetAcpiTableDxe.inf
 !if $(STANDALONE_MM_ENABLE) != TRUE
   MdeModulePkg/Universal/Acpi/BootScriptExecutorDxe/BootScriptExecutorDxe.inf
 !endif
   MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
+  OvmfPkg/StudentAcpiTableDxe/StudentAcpiTableDxe.inf
   OvmfPkg/WsmtDxe/WsmtDxe.inf
 
   #
@@ -1125,6 +1138,8 @@
        AmdSysCallLib|UefiCpuPkg/Library/AmdSysCallLibNull/AmdSysCallLibNull.inf
        SmmCpuSyncLib|UefiCpuPkg/Library/SmmCpuSyncLib/SmmCpuSyncLib.inf
    }
+  OvmfPkg/Q35SwSmiDispatchSmm/Q35SwSmiDispatchSmm.inf
+  OvmfPkg/Homework4SwSmiSmm/Homework4SwSmiSmm.inf
 
   #
   # Variable driver stack (SMM)

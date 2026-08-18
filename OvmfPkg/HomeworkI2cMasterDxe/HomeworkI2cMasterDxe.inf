@@ -1,0 +1,38 @@
+## @file
+#  Q35 ICH9 I2C Master Protocol driver.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = HomeworkI2cMasterDxe
+  FILE_GUID                      = b4dd3795-fbc8-408a-b769-c1c6ef07b1c2
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = HomeworkI2cMasterDxeEntryPoint
+
+[Sources]
+  HomeworkI2cMasterDxe.c
+  HomeworkI2cMasterDxe.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  PciLib
+  TimerLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiI2cMasterProtocolGuid               ## PRODUCES
+  gEfiPciEnumerationCompleteProtocolGuid  ## CONSUMES
+
+[Depex]
+  gEfiPciEnumerationCompleteProtocolGuid

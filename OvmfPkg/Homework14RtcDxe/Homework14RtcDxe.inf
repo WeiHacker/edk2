@@ -1,0 +1,31 @@
+## @file
+#  Homework 1.4 RTC read DXE driver.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = Homework14RtcDxe
+  FILE_GUID                      = ddd94bd3-0309-48b1-870c-73d3cc9f39f0
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = Homework14RtcDxeEntryPoint
+
+[Sources]
+  Homework14RtcDxe.c
+  Homework14RtcDxe.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  UefiDriverEntryPoint
+
+[Depex]
+  TRUE

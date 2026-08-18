@@ -1,0 +1,47 @@
+## @file
+#  Student ACPI table driver.
+#
+#  Publishes a small ACPI table with the "STUD" signature for OS-side
+#  ACPI table discovery verification.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION    = 1.30
+  BASE_NAME      = StudentAcpiTableDxe
+  FILE_GUID      = 8d67a9ce-8033-40e2-b357-7a746120151a
+  MODULE_TYPE    = DXE_DRIVER
+  VERSION_STRING = 1.0
+  ENTRY_POINT    = StudentAcpiTableDxeEntryPoint
+
+[Sources]
+  StudentAcpiTableDxe.c
+  StudentAcpiTableDxe.h
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiAcpiTableProtocolGuid    ## CONSUMES
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId            ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId       ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemRevision      ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorId        ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorRevision  ## CONSUMES
+
+[Depex]
+  gEfiAcpiTableProtocolGuid

@@ -66,6 +66,7 @@ LocateRsdp (
   *Rsdp     = NULL;
   *IsAcpi20 = FALSE;
 
+  // 查找 ACPI 2.0 RSDP
   Status = EfiGetSystemConfigurationTable (
              &gEfiAcpi20TableGuid,
              (VOID **)Rsdp
@@ -75,6 +76,7 @@ LocateRsdp (
     return EFI_SUCCESS;
   }
 
+  // 查找 ACPI 1.0 RSDP
   Status = EfiGetSystemConfigurationTable (
              &gEfiAcpi10TableGuid,
              (VOID **)Rsdp
@@ -103,6 +105,7 @@ DumpRsdp (
   ShellPrintEx (-1, -1, L"  Signature          : RSD PTR \n");
   ShellPrintEx (-1, -1, L"  Checksum           : 0x%02x (%s)\n",
     (UINTN)Rsdp->Checksum,
+    // 校验RSDP的校验和是否有效，前20个字节加起来为0
     IsChecksumValid (Rsdp, 20) ? L"OK" : L"BAD"
     );
   ShellPrintEx (-1, -1, L"  OEM ID             : %a\n", OemId);
@@ -173,23 +176,28 @@ WalkXsdt (
 
   *Bgrt = NULL;
 
+  // 检查XSDT的签名和长度是否有效
   if (Xsdt->Signature != EFI_ACPI_5_0_EXTENDED_SYSTEM_DESCRIPTION_TABLE_SIGNATURE) {
     return EFI_UNSUPPORTED;
   }
 
+  // 检查XSDT的长度是否至少为EFI_ACPI_DESCRIPTION_HEADER的大小
   if (Xsdt->Length < sizeof (EFI_ACPI_DESCRIPTION_HEADER)) {
     return EFI_COMPROMISED_DATA;
   }
 
+  // 计算XSDT中的表项数量，并获取表项指针
   EntryCount = (Xsdt->Length - sizeof (EFI_ACPI_DESCRIPTION_HEADER)) / sizeof (UINT64);
   Entry      = (UINT64 *)((UINT8 *)Xsdt + sizeof (EFI_ACPI_DESCRIPTION_HEADER));
 
   ShellPrintEx (-1, -1, L"=== XSDT (Extended System Description Table) ===\n");
+  // 打印XSDT的表头信息
   DumpAcpiHeader (Xsdt);
   ShellPrintEx (-1, -1, L"  Entry Count     : %d\n\n", EntryCount);
 
   ShellPrintEx (-1, -1, L"=== XSDT Entries ===\n");
 
+  // 遍历XSDT中的每个表项，打印表头信息，并查找BGRT表
   for (Index = 0; Index < EntryCount; Index++) {
     Header = (EFI_ACPI_DESCRIPTION_HEADER *)(UINTN)Entry[Index];
     if (Header == NULL) {
@@ -207,6 +215,7 @@ WalkXsdt (
       IsChecksumValid (Header, Header->Length) ? L"OK" : L"BAD"
       );
 
+      // 如果表的签名是BGRT，则将其转换为EFI_ACPI_5_0_BOOT_GRAPHICS_RESOURCE_TABLE类型，并返回
     if (Header->Signature == EFI_ACPI_5_0_BOOT_GRAPHICS_RESOURCE_TABLE_SIGNATURE) {
       *Bgrt = (EFI_ACPI_5_0_BOOT_GRAPHICS_RESOURCE_TABLE *)Header;
     }
@@ -252,6 +261,7 @@ GetBgrtBmpSize (
 
   Bmp = (BMP_IMAGE_HEADER *)Image;
 
+  // 检查BMP图像的签名是否为'BM'，以及文件大小和图像偏移是否有效
   if ((Bmp->CharB != 'B') || (Bmp->CharM != 'M')) {
     return EFI_UNSUPPORTED;
   }
@@ -282,6 +292,33 @@ GetBgrtBmpSize (
   return EFI_SUCCESS;
 }
 
+/**
+   * 当前程序的身份
+  gImageHandle
+        │
+        │ 查询 Loaded Image Protocol
+        ▼
+  当前程序的加载信息
+  LoadedImage
+        │
+        │ 取出程序来源设备
+        ▼
+  LoadedImage->DeviceHandle
+        │
+        │ 查询 Simple File System Protocol
+        ▼
+  程序所在设备的文件系统接口
+  SimpleFileSystem
+        │
+        │ OpenVolume
+        ▼
+  文件系统根目录
+  Root
+        │
+        │ Root->Open(...)
+        ▼
+  目标文件 Logo.bmp
+ */
 EFI_STATUS
 WriteLogoFile (
   IN CHAR16  *FileName,
@@ -370,24 +407,30 @@ ShellAppMain (
 
   ShellPrintEx (-1, -1, L"===== ACPI XSDT / BGRT Logo Dump Utility =====\n\n");
 
+  // 解析命令行参数，获取输出文件名
   OutputFileName = (Argc > 1) ? Argv[1] : BGRT_LOGO_DEFAULT_FILE;
 
+  // 通过GUID查找ACPI RSDP表
   Status = LocateRsdp (&Rsdp, &IsAcpi20);
   if (EFI_ERROR (Status)) {
     ShellPrintEx (-1, -1, L"ERROR: ACPI RSDP was not found: %r\n", Status);
     return SHELL_ABORTED;
   }
 
+  // 打印RSDP信息
   DumpRsdp (Rsdp, IsAcpi20);
 
+  // 检查是否支持ACPI 2.0及以上版本，并且RSDP中包含XSDT地址
   if ((!IsAcpi20) || (Rsdp->Revision < 2) || (Rsdp->XsdtAddress == 0)) {
     ShellPrintEx (-1, -1, L"ERROR: XSDT is not available. This app requires ACPI 2.0+ XSDT.\n");
     return SHELL_ABORTED;
   }
 
+  // 获取XSDT地址
   Xsdt = (EFI_ACPI_DESCRIPTION_HEADER *)(UINTN)Rsdp->XsdtAddress;
   ShellPrintEx (-1, -1, L"XSDT Address: 0x%p\n\n", Xsdt);
 
+  // 打印XSDT信息并查找BGRT表
   Status = WalkXsdt (Xsdt, &Bgrt);
   if (EFI_ERROR (Status)) {
     ShellPrintEx (-1, -1, L"ERROR: BGRT was not found in XSDT: %r\n", Status);
@@ -395,6 +438,7 @@ ShellAppMain (
   }
 
   ShellPrintEx (-1, -1, L"BGRT Address: 0x%p\n\n", Bgrt);
+  // 打印BGRT表信息
   DumpBgrt (Bgrt);
 
   if (Bgrt->ImageType != EFI_ACPI_5_0_BGRT_IMAGE_TYPE_BMP) {
@@ -407,7 +451,9 @@ ShellAppMain (
     return SHELL_ABORTED;
   }
 
+  // 获取BGRT图像地址
   LogoImage = (VOID *)(UINTN)Bgrt->ImageAddress;
+  // 获取BGRT图像的大小
   Status    = GetBgrtBmpSize (LogoImage, &LogoSize);
   if (EFI_ERROR (Status)) {
     ShellPrintEx (-1, -1, L"ERROR: BGRT image is not a valid BMP buffer: %r\n", Status);
@@ -415,6 +461,7 @@ ShellAppMain (
   }
 
   ShellPrintEx (-1, -1, L"Writing BGRT logo to: %s\n", OutputFileName);
+  // 将BGRT图像写入指定的输出文件
   Status = WriteLogoFile (OutputFileName, LogoImage, LogoSize);
   if (EFI_ERROR (Status)) {
     ShellPrintEx (-1, -1, L"ERROR: Failed to write BMP file: %r\n", Status);

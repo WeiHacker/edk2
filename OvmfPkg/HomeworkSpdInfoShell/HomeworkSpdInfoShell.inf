@@ -1,0 +1,31 @@
+## @file
+#  Homework SPD information shell application.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = HomeworkSpdInfoShell
+  FILE_GUID                      = 54877a3a-b4d0-4628-91ab-b9bf855ac920
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = UefiMain
+
+[Sources]
+  HomeworkSpdInfoShell.c
+  HomeworkSpdInfoShell.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  UefiApplicationEntryPoint
+  UefiBootServicesTableLib
+  UefiLib
+
+[Protocols]
+  gEfiI2cMasterProtocolGuid       ## CONSUMES

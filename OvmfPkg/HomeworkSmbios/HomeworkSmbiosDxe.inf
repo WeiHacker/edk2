@@ -1,0 +1,34 @@
+## @file
+#  Add the homework OEM SMBIOS type.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = HomeworkSmbiosDxe
+  FILE_GUID                      = 814e8fc8-3287-44ef-93bf-a7db520998ff
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = HomeworkSmbiosDxeEntryPoint
+
+[Sources]
+  HomeworkSmbiosDxe.c
+  HomeworkSmbios.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiSmbiosProtocolGuid       ## CONSUMES
+
+[Depex]
+  gEfiSmbiosProtocolGuid

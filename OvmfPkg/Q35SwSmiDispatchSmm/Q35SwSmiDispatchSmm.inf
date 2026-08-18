@@ -1,0 +1,37 @@
+## @file
+#  Q35 software SMI child dispatcher.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION              = 1.30
+  BASE_NAME                = Q35SwSmiDispatchSmm
+  FILE_GUID                = 4aafc44d-a879-477b-9f69-d2630a7f8547
+  MODULE_TYPE              = DXE_SMM_DRIVER
+  VERSION_STRING           = 1.0
+  PI_SPECIFICATION_VERSION = 0x0001000A
+  ENTRY_POINT              = Q35SwSmiDispatchSmmEntryPoint
+
+[Sources]
+  Q35SwSmiDispatchSmm.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  OvmfPkg/OvmfPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  PciLib
+  SmmServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiSmmSwDispatch2ProtocolGuid    ## PRODUCES
+
+[Depex]
+  TRUE

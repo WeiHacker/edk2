@@ -1,0 +1,39 @@
+## @file
+#  Homework 1.2 boot device path dump DXE driver.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = Homework12BootDevicePathDxe
+  FILE_GUID                      = 2e0269ec-32af-4e81-8d82-499e58f44f56
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = Homework12BootDevicePathDxeEntryPoint
+
+[Sources]
+  Homework12BootDevicePathDxe.c
+  Homework12BootDevicePathDxe.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  DevicePathLib
+  MemoryAllocationLib
+  PrintLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiRuntimeServicesTableLib
+
+[Guids]
+  gEfiEventReadyToBootGuid       ## CONSUMES ## Event
+  gEfiGlobalVariableGuid         ## CONSUMES ## Variable
+
+[Depex]
+  TRUE

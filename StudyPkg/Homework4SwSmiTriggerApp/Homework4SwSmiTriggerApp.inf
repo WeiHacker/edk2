@@ -1,0 +1,30 @@
+## @file
+#  Homework 4 software SMI trigger application.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = Homework4SwSmiTriggerApp
+  FILE_GUID                      = 9f5f2e78-63d0-4c99-b370-dc3a1a6c9f02
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = UefiMain
+
+[Sources]
+  Homework4SwSmiTriggerApp.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  UefiApplicationEntryPoint
+  UefiBootServicesTableLib
+  UefiLib
+
+[Protocols]
+  gEfiSmmControl2ProtocolGuid    ## CONSUMES

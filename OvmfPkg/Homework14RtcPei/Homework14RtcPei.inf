@@ -1,0 +1,31 @@
+## @file
+#  Homework 1.4 RTC read PEIM.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = Homework14RtcPei
+  FILE_GUID                      = 9c4d42ff-2362-46df-9f34-fc0fcb1b6989
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = Homework14RtcPeiEntryPoint
+
+[Sources]
+  Homework14RtcPei.c
+  Homework14RtcPei.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  PeimEntryPoint
+
+[Depex]
+  TRUE

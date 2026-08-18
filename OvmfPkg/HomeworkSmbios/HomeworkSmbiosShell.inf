@@ -1,0 +1,31 @@
+## @file
+#  Display the SMBIOS EPS, Type 0, and homework OEM type.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = HomeworkSmbiosShell
+  FILE_GUID                      = 84caf37e-190a-4f00-add7-d4b22649b147
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = UefiMain
+
+[Sources]
+  HomeworkSmbiosShell.c
+  HomeworkSmbios.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  UefiApplicationEntryPoint
+  UefiLib
+
+[Guids]
+  gEfiSmbiosTableGuid          ## CONSUMES ## SystemTable
+  gEfiSmbios3TableGuid         ## CONSUMES ## SystemTable

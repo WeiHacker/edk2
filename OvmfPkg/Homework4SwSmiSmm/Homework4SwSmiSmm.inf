@@ -1,0 +1,41 @@
+## @file
+#  Homework 4 software SMI SMM driver.
+#
+#  Registers a software SMI handler for value 0x88 and dumps selected Q35
+#  power-management registers.
+#
+#  Copyright (c) 2026, Student. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION              = 1.30
+  BASE_NAME                = Homework4SwSmiSmm
+  FILE_GUID                = 4f0a728f-9db6-4c16-bbd9-e3a3a2e4e27d
+  MODULE_TYPE              = DXE_SMM_DRIVER
+  VERSION_STRING           = 1.0
+  PI_SPECIFICATION_VERSION = 0x0001000A
+  ENTRY_POINT              = Homework4SwSmiSmmEntryPoint
+
+[Sources]
+  Homework4SwSmiSmm.c
+  Homework4SwSmiSmm.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  OvmfPkg/OvmfPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  PciLib
+  SmmServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiSmmSwDispatch2ProtocolGuid    ## CONSUMES
+
+[Depex]
+  gEfiSmmSwDispatch2ProtocolGuid
